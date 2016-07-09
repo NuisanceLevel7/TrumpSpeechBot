@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #
 #
-import sqlite3
+import sqlite3,sys
 import time,random,operator
 
 conn = sqlite3.connect('TrumpBS.sqlite')
@@ -23,13 +23,20 @@ for row in cur:
          if c not in punctuation:
            strippedword += c.lower()
        if len(strippedword) > 1:
-         wordcounter[strippedword] = wordcounter.get(strippedword, 0) + 1
+         if strippedword == 'the':
+           pass
+         else : 
+           wordcounter[strippedword] = wordcounter.get(strippedword, 0) + 1
 
 wordlist = wordcounter.keys()
 total = len(wordlist)
-print "Total number of unique words: ",total
+print "Most frequently used words...\n"
 words = sorted(wordcounter.items(), key=operator.itemgetter(1),reverse=True)
+count = 0 
 for pairs in words:
+  if count > 100 :
+    sys.exit()
+  count += 1
   print pairs[0], pairs[1]
 
 conn.close()
