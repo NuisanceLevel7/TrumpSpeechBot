@@ -21,6 +21,7 @@ Categories['OPENING'] = 'openings.txt'
 Categories['FP'] = 'fp.txt'
 Categories['TRUMP'] = 'trump.txt'
 Categories['misc'] = 'misc.txt'
+Categories['RNC'] = 'rnc.txt'
 
 # -*- coding: utf-8 -*-
 def strip_non_ascii(string):

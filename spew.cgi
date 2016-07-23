@@ -19,6 +19,7 @@ Categories['POL'] = 'politics.txt'
 Categories['FP'] = 'fp.txt'
 Categories['TRUMP'] = 'trump.txt'
 Categories['misc'] = 'misc.txt'
+Categories['RNC'] = 'rnc.txt'
 
 
 speech = list()
@@ -32,7 +33,7 @@ for row in cur:
 def GenBS():
  
   for category,filename in Categories.items():
-    count = random.randrange(1, 4)
+    count = random.randrange(1, 3)
 
     cur.execute('''SELECT * FROM TRUMPBS WHERE category = ? ORDER by RANDOM() limit ? ''',(category,count))
     for row in cur:
@@ -40,6 +41,7 @@ def GenBS():
         if "Continue reading the main story" in row[1]:
           pass
         else:
+          #speech.append(category + " " + row[1])
           speech.append(row[1])
 
 
