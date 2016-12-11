@@ -5,6 +5,58 @@ import os.path
 import platform
 from shutil import copyfile
 
+import sqlite3
+import time,random
+
+
+class TrumpBot:
+
+  def __init__(self):
+    self.speech = list()
+    self.conn = sqlite3.connect('TrumpBS.sqlite')
+    self.conn.text_factory = lambda x: unicode(x, 'utf-8', 'ignore')
+    self.cur = self.conn.cursor()
+    self.Categories = dict()
+    self.trumpspeech = list()
+
+
+  def GenBS(self):
+    for category,filename in self.Categories.items():
+      count = random.randrange(1, 3)
+
+      self.cur.execute('''SELECT * FROM TRUMPBS WHERE category = ? ORDER by RANDOM() limit ? ''',(category,count))
+      for row in self.cur:
+        if len(row[1]) > 15:
+          if "Continue reading the main story" in row[1]:
+            pass
+          else:
+            #speech.append(category + " " + row[1])
+            self.trumpspeech.append(row[1])
+
+
+
+
+
+  def make_speech(self):
+    f = Files()
+    self.Categories['POL'] = 'politics.txt'
+    self.Categories['FP'] = 'fp.txt'
+    self.Categories['TRUMP'] = 'trump.txt'
+    self.Categories['misc'] = 'misc.txt'
+    self.Categories['RNC'] = 'rnc.txt'
+    self.cur.execute('''SELECT * FROM TRUMPBS WHERE category = ? ORDER by RANDOM() LIMIT 1''',('OPENING',))
+    for row in self.cur:
+      if len(row[1]) > 15:
+         self.trumpspeech.append(row[1])
+
+    self.GenBS()
+    #print "Content-type: text/html\n\n"
+    for line in self.trumpspeech:
+      self.speech.append( "<p>" + line.strip().encode('utf-8') + "</p>")
+
+    self.conn.close()
+
+
 
 class DateString:
 
@@ -106,197 +158,6 @@ class Files:
     filestat = os.stat(fname)
     filesize = filestat[6]
     return checksum,filesize
-
-class HTML5:
-
-  def __init__(self):
-    self.tr = '<tr>'
-    self.td = '<td>'
-    self.th = '<th>'
-    self.end_table = '\n</table>\n'
-    self.end_html = '  </body>\n</html>\n'
-    self.http_header = 'Content Type: text/html\n\n'
-    self.stylesheet = '''
-<style>
-#header {
-    background-color:black;
-    color:white;
-    text-align:center;
-    padding:5px;
-}
-#nav {
-    line-height:30px;
-    height:400px;
-    width:15%;
-    float:left;
-    padding:5px;
-    overflow:auto;
-    background-color:#eeeeee;    
-}
-#section {
-    width:80%;
-    float:left;
-    padding:10px;
-}
-#footer {
-    background-color:black;
-    color:white;
-    clear:both;
-    text-align:center;
-    padding:5px;
-}
-#nav_content
-{
-  overflow:auto;
-  background:#fff;
-}
-#section_content
-{
-  height:655px;
-  overflow:auto;
-  background:#fff;
-  padding:10px;
-}
-p.small 
-{
-    line-height: 30px;
-}
-p.big 
-{
-    line-height: 60px;
-}
-td {
-  text-align: right;
-}
-th {
-  text-align: center;
-}
-h1 {
-  color: blue;
-}
-
-h3 
-   { 
-     color: blue; 
-     background-color: ; 
-     margin-top: 0px;
-     margin-bottom: 0px;
-   }
-h3:hover 
-   { 
-     color: white; 
-     background-color: blue; 
-     transition: all 250ms ease-in-out; 
-   }    
-
-h4 
-   { 
-     color: blue; 
-     background-color: ; 
-     margin-top: 0px;
-     margin-bottom: 0px;
-   }
-h4:hover 
-   { 
-     color: white; 
-     background-color: blue; 
-     transition: all 250ms ease-in-out; 
-   }    
-
-</style>'''    
-    
-    
-
-
-
-  def style_sheet(self,cssfile='reportstyle.css'):
-
-
-    f = open('Report/css/' + cssfile,'w')
-    f.write(self.stylesheet)
-    f.close()
-   
-    
- 
-  
-  def th_list(self,row,bgcolor='#BAB9B8'):
-    
-    html = '      <tr bgcolor=' + bgcolor + '>'
-    for cell in row:
-      html += '<th>' + str(cell) + '</th>'
-    html += '</tr>\n'
-    return html
-
-  def tr_list(self,row,attr=False):
-    
-
-    html = '      <tr>'
-    for cell in row:
-      if attr:
-        html += '<td ' + attr + '>' + str(cell) + '</td>'
-      else:
-        html += '<td>' + str(cell) + '</td>'
-    html += '</tr>\n'
-    return html   
- 
- 
-  def start_html(self,title='Web Report Page',align='center'): 
-    html =   '<!DOCTYPE html>\n<html>\n'
-    html +=  '  <head><title>' + title + '</title>\n'
-    html +=  '  <meta charset="UTF-8">\n'
-    html +=  '  <link href="../css/reportstyle.css" rel="stylesheet" />\n'
-    html +=  '  <link href="css/reportstyle.css" rel="stylesheet" />\n'
-    #html +=  self.stylesheet
-    html +=  '  </head>\n'
-    html +=  '  <body align="' + align + '">\n'
-    return  html
-    
-       
-
-  def start_table(self,align='center',border='1',caption='',width='100%'):
-    html =  '\n\n'
-    #html += '<p><br>\n'
-    html += '<table align="' + align +  '" border="' + str(border)
-    html += '" width="' + width + '">\n'
-    if caption != '':
-      html += '<caption>' + caption + '</caption>\n'
-    return  html
- 
-
-  def insert_table(self,rows,headings,align='center',border='1',caption=''):
-    html =  '\n\n'
-    html += '<p><br>\n'
-    html += '<table align="' + align +  '" border="' + str(border) + '">\n'
-    html += '<caption>' + caption + '</caption>\n'
-    for row in rows:
-      html += self.tr_list(row)
-    html += self.end_table
-    return  html
-
-
-  def header(self,content):
-    code = '<div id="header"><br>\n'
-    code += content + '\n</div>\n'
-    return code
-
-  def nav(self,content):
-    code = '<div id="nav">\n'
-    code += content + '\n</div>\n'
-    return code
-
-  def section(self,content):
-    code = '<div id="section">\n'
-    code += content + '\n</div>\n'
-    return code
-
-  def footer(self,content):
-    code = '<div id="footer">\n'
-    code += content + '\n</div>\n'
-    return code
-
-
-
-
 
 
 
