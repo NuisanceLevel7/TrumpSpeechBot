@@ -15,6 +15,7 @@ def trumpbot():
     speech = ""
     for line in bot.speech:
       speech = speech + line + "\n"
+    del bot
     return render_template('trumpbot.html', out = speech)
 
 @app.route("/vic")
