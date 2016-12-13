@@ -5,7 +5,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "<h1 style='color:blue'>Hello There!</h1>"
+    url = 'http://www.viclab.org'
+    return redirect(url, code=307, Response=None)
 
 
 @app.route("/TrumpBot")
@@ -20,7 +21,6 @@ def trumpbot():
 
 @app.route("/vic")
 def vic():
-    #return "<h1 style='color:blue'>Hello Vic!</h1>"
     url = 'http://www.viclab.org'
     return redirect(url, code=307, Response=None)
 
