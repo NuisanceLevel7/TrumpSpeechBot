@@ -13,9 +13,7 @@ def hello():
 def trumpbot():
     bot = TrumpBot()
     bot.make_speech()
-    speech = ""
-    for line in bot.speech:
-      speech = speech + line + "\n"
+    speech = bot.speech[:]
     del bot
     return render_template('trumpbot.html', out = speech)
 
