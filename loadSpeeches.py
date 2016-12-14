@@ -35,10 +35,12 @@ def loadBS():
   for category,filename in Categories.items():
     f.read_file('Speeches/' + filename)
     for line in f.data:
-      line = strip_non_ascii(line)
+      #line = strip_non_ascii(line)
       if len(line) > 3:
+        #cur.execute('''INSERT OR IGNORE INTO TRUMPBS (bullshit, category)
+        #  VALUES ( ?,? )''', ( line.encode('utf-8'), category ) )
         cur.execute('''INSERT OR IGNORE INTO TRUMPBS (bullshit, category)
-          VALUES ( ?,? )''', ( line.encode('utf-8'), category ) )
+          VALUES ( ?,? )''', ( line, category ) )
 
   conn.commit()
 
