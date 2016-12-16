@@ -1,7 +1,20 @@
 from flask import Flask, render_template, request, redirect
 from TrumpBotModule import TrumpBot
+from flask_wtf import Form
+from wtforms import SelectField, SubmitField
+
+class SpeechSelect(Form):
+    SpeechType = SelectField(
+        'Speech Type',
+        choices=[('Default', 'Default'), 
+                 ('Insulting', 'Insulting'), 
+                 ('Twitter', 'Twitter'), 
+                 ('Bragging', 'Bragging'), 
+                 ('OCD', 'OCD')]
+    )
 
 app = Flask(__name__)
+app.secret_key = "I hate to tell you"
 
 @app.route("/")
 def hello():
@@ -9,13 +22,14 @@ def hello():
     return redirect(url, code=307, Response=None)
 
 
-@app.route("/TrumpBot")
+@app.route("/TrumpBot", methods=['GET','POST'])
 def trumpbot():
+    form = SpeechSelect()
     bot = TrumpBot()
     bot.make_speech()
     speech = bot.speech[:]
     del bot
-    return render_template('trumpbot.html', out = speech)
+    return render_template('trumpbot.html', form=form, out=speech)
 
 @app.route("/vic")
 def vic():

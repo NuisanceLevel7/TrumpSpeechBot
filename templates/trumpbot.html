@@ -2,23 +2,32 @@
 <html>
   <head><title>TrumpBot Ver 0.1a</title>
   <meta charset="UTF-8">
-  <link href="http://www.viclab.org/css/style.css?version=2.0" rel="stylesheet" />
+  <link href="http://www.viclab.org/css/style.css?version=2.4" rel="stylesheet" />
   </head>
-  <body align="left">
+  <body  align="left">
 
 <div id="header"><br>
-<table align=left bgcolor=gray><tr><td><img src="http://www.viclab.org/trump.jpg"></td>
-<td><h1>Donald Trump Speech Bot</h1>
-<a href="http://nexus.viclab.org/TrumpBot"><h2>New Speech</h2>
-<a href="http://www.viclab.org"><h5>www.viclab.org</h2>
+<table align=left bgcolor=gray>
+<tr>
+  <td><img src="http://www.viclab.org/trump.jpg"></td>
+  <td><h1>Donald Trump Speech Bot</h1>
+  <form action="/TrumpBot" method="post">
+  Speech Category: {{ form.SpeechType}}
+  <input type="submit" value="New Speech">
+  </form>
+  <hr><a href="http://www.viclab.org"><h5>www.viclab.org</h2>
 </td></tr></table>
 
 </div>
 <p></p>
 <div id="section_speech">
+<table width=100% align=left>
+<tr><td>
 {% for line in out %}
-        {{ line | safe }}
+        {{ line | safe }} 
 {% endfor %}
+</td></tr>
+</table>
 </div>
 </body>
 </html>
