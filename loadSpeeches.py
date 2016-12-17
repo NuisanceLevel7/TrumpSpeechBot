@@ -2,6 +2,7 @@
 #
 #
 import sqlite3
+import re
 import time
 from TrumpBotModule import Files
 from TrumpBotModule import SQLTools
@@ -34,7 +35,8 @@ def loadBS():
   topics = dict()
 
   topics['ocd'] = ['hillary','obama','bush']
-  topics['bragging'] = [' i am a ',' me ',' my ',' love donald ',' i was the one ']
+  topics['bragging'] = [' i am a ',' me ',' love donald ',
+         "nobody.*trump", 'I own ',' i was the one ']
   for category,filename in Categories.items():
     f.read_file('Speeches/' + filename)
     for line in f.data:
@@ -44,7 +46,8 @@ def loadBS():
       for thiskey in topic_keys:
         for keyword in topics[thiskey] :
           low = line.lower()
-          if low.find(keyword) >= 0 :
+          #if low.find(keyword) >= 0 :
+          if re.search(keyword,low):
             foundkeys[thiskey] = 1;
       for matches in foundkeys.keys():
         topic = topic + matches + ' '    
