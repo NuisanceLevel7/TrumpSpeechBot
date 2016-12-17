@@ -20,11 +20,11 @@ class TrumpBot:
     self.trumpspeech = list()
 
 
-  def GenBS(self):
+  def GenBS(self,topic):
     for category,filename in self.Categories.items():
       count = random.randrange(1, 3)
-
-      self.cur.execute('''SELECT * FROM TRUMPBS WHERE category = ? ORDER by RANDOM() limit ? ''',(category,count))
+      self.cur.execute('''SELECT * FROM TRUMPBS WHERE category = ? AND topic LIKE ? ORDER by RANDOM() limit ? ''',
+                       (category,'%{}%'.format(topic),count))
       for row in self.cur:
         if len(row[1]) > 15:
           if "Continue reading the main story" in row[1]:
@@ -37,20 +37,23 @@ class TrumpBot:
 
 
 
-  def make_speech(self):
+  def make_speech(self,topic='Default'):
+    topic = topic.lower()
     f = Files()
     self.Categories['POL'] = 'politics.txt'
     self.Categories['FP'] = 'fp.txt'
     self.Categories['TRUMP'] = 'trump.txt'
     self.Categories['misc'] = 'misc.txt'
     self.Categories['RNC'] = 'rnc.txt'
-    self.cur.execute('''SELECT * FROM TRUMPBS WHERE category = ? ORDER by RANDOM() LIMIT 1''',('OPENING',))
-    for row in self.cur:
-      if len(row[1]) > 15:
-         self.trumpspeech.append(row[1])
+    self.trumpspeech.append('Speech Topic: ' + topic)
+    if 'default' in topic:
+      self.cur.execute('''SELECT * FROM TRUMPBS WHERE category = ? ORDER by RANDOM() LIMIT 1''',
+                      ('OPENING',))
+      for row in self.cur:
+        if len(row[1]) > 15:
+          self.trumpspeech.append(row[1])
 
-    self.GenBS()
-    #print "Content-type: text/html\n\n"
+    self.GenBS(topic)
     for line in self.trumpspeech:
       self.speech.append( "<p>" + line.strip().encode('utf-8') + "</p>")
 
@@ -79,7 +82,8 @@ class SQLTools:
     CREATE TABLE TRUMPBS (
       id  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
       bullshit    BLOB,
-      category    TEXT
+      category    TEXT,
+      topic    TEXT
     );
 
 

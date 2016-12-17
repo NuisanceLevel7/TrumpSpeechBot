@@ -31,16 +31,27 @@ def strip_non_ascii(string):
 
 
 def loadBS():
- 
+  topics = dict()
+
+  topics['ocd'] = ['hillary','obama','bush']
+  topics['bragging'] = [' i am a ',' me ',' my ',' love donald ',' i was the one ']
   for category,filename in Categories.items():
     f.read_file('Speeches/' + filename)
     for line in f.data:
+      topic = 'default '
+      topic_keys = topics.keys()
+      foundkeys = dict()
+      for thiskey in topic_keys:
+        for keyword in topics[thiskey] :
+          low = line.lower()
+          if low.find(keyword) >= 0 :
+            foundkeys[thiskey] = 1;
+      for matches in foundkeys.keys():
+        topic = topic + matches + ' '    
       #line = strip_non_ascii(line)
       if len(line) > 3:
-        #cur.execute('''INSERT OR IGNORE INTO TRUMPBS (bullshit, category)
-        #  VALUES ( ?,? )''', ( line.encode('utf-8'), category ) )
-        cur.execute('''INSERT OR IGNORE INTO TRUMPBS (bullshit, category)
-          VALUES ( ?,? )''', ( line, category ) )
+        cur.execute('''INSERT OR IGNORE INTO TRUMPBS (bullshit, category, topic)
+          VALUES ( ?,?,? )''', ( line, category, topic ) )
 
   conn.commit()
 

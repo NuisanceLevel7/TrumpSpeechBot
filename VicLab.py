@@ -7,8 +7,6 @@ class SpeechSelect(Form):
     SpeechType = SelectField(
         'Speech Type',
         choices=[('Default', 'Default'), 
-                 ('Insulting', 'Insulting'), 
-                 ('Twitter', 'Twitter'), 
                  ('Bragging', 'Bragging'), 
                  ('OCD', 'OCD')]
     )
@@ -24,9 +22,12 @@ def hello():
 
 @app.route("/TrumpBot", methods=['GET','POST'])
 def trumpbot():
+    topic = 'Default'
+    if request.method == 'POST':
+      topic = request.form['SpeechType']
     form = SpeechSelect()
     bot = TrumpBot()
-    bot.make_speech()
+    bot.make_speech(topic)
     speech = bot.speech[:]
     del bot
     return render_template('trumpbot.html', form=form, out=speech)
