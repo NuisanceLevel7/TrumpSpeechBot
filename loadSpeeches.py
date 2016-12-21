@@ -22,6 +22,7 @@ Categories['OPENING'] = 'openings.txt'
 Categories['FP'] = 'fp.txt'
 Categories['TRUMP'] = 'trump.txt'
 Categories['misc'] = 'misc.txt'
+Categories['TWEETS'] = 'tweets.txt'
 Categories['RNC'] = 'rnc.txt'
 
 # -*- coding: utf-8 -*-
