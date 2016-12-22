@@ -21,6 +21,7 @@ class TrumpBot:
 
 
   def GenBS(self,topic):
+    self.trumpspeech.append('%{}%'.format(topic)+"\n")
     for category,filename in self.Categories.items():
       count = random.randrange(3, 12)
       self.cur.execute('''SELECT * FROM TRUMPBS WHERE category = ? AND topic LIKE ? ORDER by RANDOM() limit ? ''',
@@ -45,7 +46,7 @@ class TrumpBot:
     self.Categories['TRUMP'] = 'trump.txt'
     self.Categories['misc'] = 'misc.txt'
     self.Categories['RNC'] = 'rnc.txt'
-    self.Categories['TWEETS'] = 'tweets.txt'
+    self.Categories['twitter'] = 'tweets.txt'
     if 'default' in topic:
       self.cur.execute('''SELECT * FROM TRUMPBS WHERE 
                        category = ? ORDER by RANDOM() LIMIT 1''',('OPENING',))
@@ -53,13 +54,16 @@ class TrumpBot:
         if len(row[1]) > 15:
           opening = row[1]
     self.GenBS(topic)
-    for line in self.trumpspeech:
+    tag =  self.trumpspeech[0]
+    for line in self.trumpspeech[1:]:
       self.speech.append(  line.strip().encode('utf-8') )
     random.shuffle(self.speech)
     newspeech = list(self.speech[0:7])
     self.speech = list(newspeech)
     if 'default' in topic:
       self.speech[0] = opening
+    newspeech = [tag] + self.speech
+    #self.speech = list(newspeech)
     self.conn.close()
 
 

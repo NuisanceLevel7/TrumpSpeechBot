@@ -5,14 +5,16 @@ from wtforms import SelectField, SubmitField, TextAreaField
 from wtforms import validators
 
 # List of vlid topics...
-TopicList = ['Default','Bragging','OCD']
+TopicList = ['default','bragging','ocd','media','twitter']
 
 class SpeechSelect(Form):
     SpeechType = SelectField(
         'Speech Type',
-        choices=[('Default', 'Default'), 
-                 ('Bragging', 'Bragging'), 
-                 ('OCD', 'OCD')]
+        choices=[('default', 'Default'), 
+                 ('media', 'Media Bashing'), 
+                 ('twitter', 'Twitter'), 
+                 ('bragging', 'Bragging'), 
+                 ('ocd', 'OCD')]
     )
 
 class TrumpTweet(Form):
