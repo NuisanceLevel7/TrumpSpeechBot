@@ -13,7 +13,6 @@ class SpeechSelect(Form):
         choices=[('default', 'Default'), 
                  ('media', 'Media Bashing'), 
                  ('twitter', 'Twitter'), 
-                 ('bragging', 'Bragging'), 
                  ('ocd', 'OCD')]
     )
 
