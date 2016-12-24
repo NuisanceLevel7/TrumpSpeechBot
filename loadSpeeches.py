@@ -35,7 +35,7 @@ def strip_non_ascii(string):
 def loadBS():
   topics = dict()
 
-  topics['media'] = [' pundit',' cnn',' media','new york times', ' ny ']
+  topics['media'] = [' pundit',' cnn',' media','new york times', ' ny ','the press ']
   topics['ocd'] = ['hillary','obama','bush']
   topics['twitter'] = ['twitter']
   topics['bragging'] = [' i am a ',' me ',' love donald ',
