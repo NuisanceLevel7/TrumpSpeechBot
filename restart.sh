@@ -1,5 +1,5 @@
 #!/bin/bash
 
-sudo service VicLab restart
-sudo service nginx restart
+service VicLab restart
+service nginx restart
 
