@@ -47,6 +47,7 @@ class TrumpBot:
     self.Categories['misc'] = 'misc.txt'
     self.Categories['RNC'] = 'rnc.txt'
     self.Categories['twitter'] = 'tweets.txt'
+    self.Categories['POTUS'] = 'potus.txt'
     if 'default' in topic:
       self.cur.execute('''SELECT * FROM TRUMPBS WHERE 
                        category = ? ORDER by RANDOM() LIMIT 1''',('OPENING',))

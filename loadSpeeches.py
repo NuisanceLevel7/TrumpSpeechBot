@@ -24,6 +24,7 @@ Categories['TRUMP'] = 'trump.txt'
 Categories['misc'] = 'misc.txt'
 Categories['twitter'] = 'tweets.txt'
 Categories['RNC'] = 'rnc.txt'
+Categories['POTUS'] = 'potus.txt'
 
 # -*- coding: utf-8 -*-
 def strip_non_ascii(string):

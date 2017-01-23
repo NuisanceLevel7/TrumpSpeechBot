@@ -25,9 +25,14 @@ app.secret_key = "I hate to tell you"
 
 @app.route("/")
 def hello():
-    url = 'http://www.viclab.org'
+    url = 'https://www.viclab.org'
     return redirect(url, code=307, Response=None)
 
+
+@app.route("/stats")
+def stats():
+    url = 'https://nexus.viclab.org/static/stats.html'
+    return redirect(url, code=307, Response=None)
 
 @app.route("/TrumpBot", methods=['GET','POST'])
 def trumpbot():
