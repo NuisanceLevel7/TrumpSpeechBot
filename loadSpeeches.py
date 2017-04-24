@@ -54,7 +54,12 @@ def loadBS():
           low = line.lower()
           #if low.find(keyword) >= 0 :
           if re.search(keyword,low):
-            foundkeys[thiskey] = 1;
+            if thiskey == 'twitter':
+              if len(line) < 200:
+                foundkeys[thiskey] = 1;
+            else:
+              foundkeys[thiskey] = 1;
+
       for matches in foundkeys.keys():
         topic = topic + matches + ' '    
       #line = strip_non_ascii(line)

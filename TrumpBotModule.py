@@ -24,6 +24,8 @@ class TrumpBot:
     self.trumpspeech.append('%{}%'.format(topic)+"\n")
     for category,filename in self.Categories.items():
       count = random.randrange(3, 12)
+      if topic == 'twitter':
+        count = 15
       self.cur.execute('''SELECT * FROM TRUMPBS WHERE category = ? AND topic LIKE ? ORDER by RANDOM() limit ? ''',
                        (category,'%{}%'.format(topic),count))
       for row in self.cur:
@@ -60,6 +62,8 @@ class TrumpBot:
       self.speech.append(  line.strip().encode('utf-8') )
     random.shuffle(self.speech)
     newspeech = list(self.speech[0:7])
+    if topic == 'twitter':
+      newspeech = list(self.speech[:])
     self.speech = list(newspeech)
     if 'default' in topic:
       self.speech[0] = opening
